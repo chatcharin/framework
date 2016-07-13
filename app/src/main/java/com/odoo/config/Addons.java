@@ -20,6 +20,8 @@
 package com.odoo.config;
 
 import com.odoo.addons.customers.Customers;
+import com.odoo.addons.workorder.WorkcenterList;
+import com.odoo.addons.workorder.models.Workcenter;
 import com.odoo.core.support.addons.AddonsHelper;
 import com.odoo.core.support.addons.OAddon;
 
@@ -31,5 +33,6 @@ public class Addons extends AddonsHelper {
      * Ex.:
      * OAddon partners = new OAddon(Partners.class).setDefault();
      */
-    OAddon customers = new OAddon(Customers.class).setDefault();
+    // OAddon customers = new OAddon(Customers.class).setDefault();
+    OAddon workcenters = new OAddon(WorkcenterList.class);
 }

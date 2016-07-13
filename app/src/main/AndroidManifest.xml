@@ -117,6 +117,26 @@
         <activity
             android:name="com.odoo.addons.customers.CustomerDetails"
             android:windowSoftInputMode="adjustPan" />
+
+        <!-- Workcenter -->
+        <service android:name=".addons.workorder.services.WorkcenterSyncService"
+            android:exported="true"
+            android:process=":sync_tasks">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/workcenter_sync_adapter" />
+        </service>
+
+        <provider
+            android:name="com.odoo.addons.workorder.providers.WorkcenterSyncProvider"
+            android:authorities="com.odoo.addons.workorder.workcenter"
+            android:label="Work Centers"
+            android:multiprocess="true" />
+
     </application>
 
 </manifest>
