@@ -137,6 +137,26 @@
             android:label="Work Centers"
             android:multiprocess="true" />
 
+        <!-- Product -->
+        <service android:name=".addons.workorder.services.ProductSyncService"
+            android:exported="true"
+            android:process=":sync_tasks">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/product_sync_adapter" />
+        </service>
+
+        <provider
+            android:name="com.odoo.addons.workorder.providers.ProductSyncProvider"
+            android:authorities="com.odoo.addons.workorder.product"
+            android:label="Products"
+            android:multiprocess="true" />
+
+
     </application>
 
 </manifest>
