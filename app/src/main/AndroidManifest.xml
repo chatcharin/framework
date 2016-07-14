@@ -156,6 +156,25 @@
             android:label="Products"
             android:multiprocess="true" />
 
+        <!-- UOM -->
+        <service android:name=".addons.workorder.services.UomSyncService"
+            android:exported="true"
+            android:process=":sync_tasks">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/uom_sync_adapter" />
+        </service>
+
+        <provider
+            android:name="com.odoo.addons.workorder.providers.UomSyncProvider"
+            android:authorities="com.odoo.addons.workorder.uom"
+            android:label="UOMs"
+            android:multiprocess="true" />
+
 
     </application>
 

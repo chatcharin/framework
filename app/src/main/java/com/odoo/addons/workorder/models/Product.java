@@ -15,7 +15,8 @@ public class Product extends OModel {
     public static final String TAG = Workcenter.class.getSimpleName();
     public static final String AUTHORITY = "com.odoo.addons.workorder.product";
 
-    OColumn name = new OColumn("Name", OVarchar.class).setSize(100);
+    OColumn name = new OColumn("Name", OVarchar.class);
+    OColumn uom_id = new OColumn("Uom", Uom.class, OColumn.RelationType.ManyToOne);
 
     public Product(Context context, OUser user) {
         super(context, "product.product", user);

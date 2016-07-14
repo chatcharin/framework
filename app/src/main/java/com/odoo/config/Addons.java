@@ -21,6 +21,7 @@ package com.odoo.config;
 
 import com.odoo.addons.customers.Customers;
 import com.odoo.addons.workorder.ProductList;
+import com.odoo.addons.workorder.UomList;
 import com.odoo.addons.workorder.WorkcenterList;
 import com.odoo.addons.workorder.models.Product;
 import com.odoo.addons.workorder.models.Workcenter;
@@ -28,14 +29,7 @@ import com.odoo.core.support.addons.AddonsHelper;
 import com.odoo.core.support.addons.OAddon;
 
 public class Addons extends AddonsHelper {
-
-    /**
-     * Declare your required module here
-     * NOTE: For maintain sequence use object name in asc order.
-     * Ex.:
-     * OAddon partners = new OAddon(Partners.class).setDefault();
-     */
-    // OAddon customers = new OAddon(Customers.class).setDefault();
-    OAddon workcenters = new OAddon(WorkcenterList.class);
+    OAddon workcenters = new OAddon(WorkcenterList.class).setDefault();
     OAddon products = new OAddon(ProductList.class) ;
+    OAddon uoms = new OAddon(UomList.class);
 }

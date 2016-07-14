@@ -8,19 +8,12 @@
 
 
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/product_name"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="@color/body_text_1"
-    android:fontFamily="@string/font_normal" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/uom_id"
+        android:id="@+id/uom_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/body_text_1"
         android:fontFamily="@string/font_normal" />
+
 
 </LinearLayout>
