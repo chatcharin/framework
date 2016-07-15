@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.odoo.R;
+import com.odoo.addons.workorder.models.Product;
 import com.odoo.addons.workorder.models.Production;
+import com.odoo.addons.workorder.models.Uom;
 import com.odoo.core.orm.ODataRow;
 import com.odoo.core.support.addons.fragment.BaseFragment;
 import com.odoo.core.support.addons.fragment.ISyncStatusObserverListener;
@@ -107,6 +109,17 @@ public class ProductionList extends BaseFragment implements LoaderManager.Loader
     @Override
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
         OControls.setText(view, R.id.production_name, row.getString("name"));
+        OControls.setText(view, R.id.production_qty, row.getString("product_qty"));
+        if (!row.getInt("product_id").equals(false)){
+            int product_id = row.getInt("product_id") ;
+            Product product = new Product(getContext(), null) ;
+            OControls.setText(view, R.id.production_product_name, product.getName(product_id));
+        }
+        if (!row.getInt("product_uom").equals(false)){
+            int uom_id = row.getInt("product_uom") ;
+            Uom uom = new Uom(getContext(), null) ;
+            OControls.setText(view, R.id.production_uom_name, uom.getName(uom_id));
+        }
     }
 
     @Override

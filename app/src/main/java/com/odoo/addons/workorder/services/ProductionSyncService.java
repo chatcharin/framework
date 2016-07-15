@@ -8,6 +8,11 @@ import com.odoo.core.service.OSyncAdapter;
 import com.odoo.core.service.OSyncService;
 import com.odoo.core.support.OUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import odoo.helper.ODomain;
+
 /**
  * Created by tititabs on 7/13/2016 AD.
  */
@@ -21,6 +26,14 @@ public class ProductionSyncService extends OSyncService {
 
     @Override
     public void performDataSync(OSyncAdapter adapter, Bundle extras, OUser user) {
-        adapter.syncDataLimit(80);
+        if (adapter.getModel().getModelName().equals("mrp.production")) {
+            List<String> stateIds = new ArrayList<>();
+            stateIds.add("done");
+            stateIds.add("cancel") ;
+            ODomain domain = new ODomain();
+            domain.add("state", "not in", stateIds);
+            adapter.setDomain(domain).syncDataLimit(10);
+        }
+        //adapter.syncDataLimit(80);
     }
 }

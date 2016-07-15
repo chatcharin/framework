@@ -9,6 +9,8 @@ import com.odoo.core.service.OSyncAdapter;
 import com.odoo.core.service.OSyncService;
 import com.odoo.core.support.OUser;
 
+import odoo.helper.ODomain;
+
 /**
  * Created by tititabs on 7/13/2016 AD.
  */
@@ -22,6 +24,11 @@ public class ProductSyncService extends OSyncService {
 
     @Override
     public void performDataSync(OSyncAdapter adapter, Bundle extras, OUser user) {
-        adapter.syncDataLimit(80);
+        if (adapter.getModel().getModelName().equals("product.product")) {
+            ODomain domain = new ODomain();
+            domain.add("sale_ok", "=", true);
+            adapter.setDomain(domain).syncDataLimit(80);
+        }
+        //adapter.syncDataLimit(80);
     }
 }
