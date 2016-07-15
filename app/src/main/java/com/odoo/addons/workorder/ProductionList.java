@@ -8,19 +8,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.odoo.R;
-import com.odoo.addons.workorder.models.Product;
-import com.odoo.addons.workorder.models.Uom;
-import com.odoo.addons.workorder.models.Workcenter;
+import com.odoo.addons.workorder.models.Production;
 import com.odoo.core.orm.ODataRow;
-import com.odoo.core.orm.OM2ORecord;
-import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.support.addons.fragment.BaseFragment;
 import com.odoo.core.support.addons.fragment.ISyncStatusObserverListener;
 import com.odoo.core.support.drawer.ODrawerItem;
@@ -31,13 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by tititabs on 7/13/2016 AD.
+ * Created by tititab on 7/15/16 AD.
  */
-public class ProductList extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class ProductionList extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
         ISyncStatusObserverListener, SwipeRefreshLayout.OnRefreshListener,
         OCursorListAdapter.OnViewBindListener {
 
-    public static final String TAG = ProductList.class.getSimpleName();
+    public static final String TAG = ProductionList.class.getSimpleName();
 
     private View mView;
     private ListView listView;
@@ -46,7 +41,7 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
     @Override
     public List<ODrawerItem> drawerMenus(Context context) {
         List<ODrawerItem> menu = new ArrayList<>();
-        menu.add(new ODrawerItem(TAG).setTitle("Products").setInstance(new ProductList()));
+        menu.add(new ODrawerItem(TAG).setTitle("Productions").setInstance(new ProductionList()));
         return menu;
     }
 
@@ -55,14 +50,12 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_list, container, false);
-        //return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.production_list, container, false);
     }
 
-
     @Override
-    public Class<Product> database() {
-        return Product.class;
+    public Class<Production> database() {
+        return Production.class;
     }
 
     @Override
@@ -97,7 +90,6 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
             // Request for sync
             onRefresh();
         }
-
     }
 
     @Override
@@ -108,19 +100,13 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
     @Override
     public void onRefresh() {
         if (inNetwork()) {
-            parent().sync().requestSync(Product.AUTHORITY);
+            parent().sync().requestSync(Production.AUTHORITY);
         }
     }
 
     @Override
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
-        OControls.setText(view, R.id.product_name, row.getString("name"));
-        String unit_name = "";
-        if (!row.getInt("uom_id").equals(false)){
-            int uom_id = row.getInt("uom_id") ;
-            Uom uom = new Uom(getContext(), null) ;
-            OControls.setText(view, R.id.uom_id, uom.getName(uom_id));
-        }
+        OControls.setText(view, R.id.production_name, row.getString("name"));
     }
 
     @Override
@@ -128,9 +114,9 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
 
         super.onViewCreated(view, savedInstanceState);
         mView = view;
-        listView = (ListView) mView.findViewById(R.id.productList);
+        listView = (ListView) mView.findViewById(R.id.productionList);
         //listAdapter = new OCursorListAdapter(getActivity(), null, android.R.layout.simple_list_item_1);
-        listAdapter = new OCursorListAdapter(getActivity(), null, R.layout.product_list_item);
+        listAdapter = new OCursorListAdapter(getActivity(), null, R.layout.production_list_item);
         listView.setAdapter(listAdapter);
 
         listAdapter.setOnViewBindListener(this);
@@ -139,5 +125,4 @@ public class ProductList extends BaseFragment implements LoaderManager.LoaderCal
         getLoaderManager().initLoader(0, null, this);
 
     }
-
 }

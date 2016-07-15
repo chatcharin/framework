@@ -175,6 +175,24 @@
             android:label="UOMs"
             android:multiprocess="true" />
 
+        <!-- Production -->
+        <service android:name=".addons.workorder.services.ProductionSyncService"
+            android:exported="true"
+            android:process=":sync_tasks">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/production_sync_adapter" />
+        </service>
+
+        <provider
+            android:name="com.odoo.addons.workorder.providers.ProductionSyncProvider"
+            android:authorities="com.odoo.addons.workorder.production"
+            android:label="Productions"
+            android:multiprocess="true" />
 
     </application>
 

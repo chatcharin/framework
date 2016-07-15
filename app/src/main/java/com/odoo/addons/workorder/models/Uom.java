@@ -3,6 +3,8 @@ package com.odoo.addons.workorder.models;
 import android.content.Context;
 import android.net.Uri;
 
+import com.odoo.base.addons.res.ResCurrency;
+import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.types.OVarchar;
@@ -19,6 +21,12 @@ public class Uom extends OModel {
 
     public Uom(Context context, OUser user) {
         super(context, "product.uom", user);
+    }
+
+    public static String getName(Context context, int row_id) {
+        Uom uom = new Uom(context, null);
+        ODataRow row = uom.browse(row_id);
+        return (row != null) ? row.getString("name") : "" ;
     }
 
     @Override

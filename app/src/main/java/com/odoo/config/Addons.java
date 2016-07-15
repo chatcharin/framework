@@ -21,6 +21,7 @@ package com.odoo.config;
 
 import com.odoo.addons.customers.Customers;
 import com.odoo.addons.workorder.ProductList;
+import com.odoo.addons.workorder.ProductionList;
 import com.odoo.addons.workorder.UomList;
 import com.odoo.addons.workorder.WorkcenterList;
 import com.odoo.addons.workorder.models.Product;
@@ -32,4 +33,5 @@ public class Addons extends AddonsHelper {
     OAddon workcenters = new OAddon(WorkcenterList.class).setDefault();
     OAddon products = new OAddon(ProductList.class) ;
     OAddon uoms = new OAddon(UomList.class);
+    OAddon productions = new OAddon(ProductionList.class);
 }

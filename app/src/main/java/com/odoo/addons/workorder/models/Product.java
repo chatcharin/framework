@@ -3,6 +3,7 @@ package com.odoo.addons.workorder.models;
 import android.content.Context;
 import android.net.Uri;
 
+import com.odoo.core.orm.ODataRow;
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.types.OVarchar;
@@ -20,6 +21,12 @@ public class Product extends OModel {
 
     public Product(Context context, OUser user) {
         super(context, "product.product", user);
+    }
+
+    public static String getName(Context context, int row_id) {
+        Product data = new Product(context, null);
+        ODataRow row = data.browse(row_id);
+        return (row != null) ? row.getString("name") : "" ;
     }
 
     @Override
