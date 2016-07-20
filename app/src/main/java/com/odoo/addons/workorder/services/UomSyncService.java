@@ -24,6 +24,6 @@ public class UomSyncService extends OSyncService {
 
     @Override
     public void performDataSync(OSyncAdapter adapter, Bundle extras, OUser user) {
-        adapter.syncDataLimit(300);
+        adapter.syncDataLimit(80);
     }
 }
