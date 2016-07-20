@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_divider"
+        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/workorder_name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/body_text_1"
+                android:fontFamily="@string/font_normal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/workcenter_name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/body_text_1"
+                android:fontFamily="@string/font_normal"
+                />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/button_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".5"
+            android:onClick="deleteItem"
+            android:src="@drawable/ic_action_settings"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

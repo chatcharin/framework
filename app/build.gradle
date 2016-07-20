@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion '24.0.0'
     defaultConfig {
         //FIXME: Change application name as your requirement
         manifestPlaceholders = [applicationName: "Work Order"]
         //FIXME: Please change the application id as your requirement
         applicationId "th.co.ineco"
-        minSdkVersion 14
-        targetSdkVersion 24
+        minSdkVersion 19
+        targetSdkVersion 23
         versionCode 6
         versionName "2.2.0"
         multiDexEnabled true
@@ -24,16 +24,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:cardview-v7:24.0.0'
-    compile 'com.google.android.gms:play-services:9.0.2'
-    compile 'com.android.support:design:24.0.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':intro-slider-lib')
     compile project(':odoo-rpc-v3')
+    compile 'com.google.android.gms:play-services:9.2.1'
+    compile 'com.android.support:appcompat-v7:24.1.0'
+    compile 'com.android.support:design:24.1.0'
+    compile 'com.android.support:cardview-v7:24.1.0'
+    compile 'com.android.support:multidex:1.0.1'
 }
 
 /**

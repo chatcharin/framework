@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.multidex.MultiDex;
 
 import com.odoo.datas.OConstants;
 
@@ -38,6 +39,12 @@ public class App extends Application {
     public static String APPLICATION_ID;
     public static String APPLICATION_NAME;
     private static HashMap<String, Odoo> mOdooInstances = new HashMap<>();
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {

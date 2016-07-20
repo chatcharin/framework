@@ -194,6 +194,25 @@
             android:label="Productions"
             android:multiprocess="true" />
 
+        <!-- Work Order -->
+        <service android:name=".addons.workorder.services.WorkOrderSyncService"
+            android:exported="true"
+            android:process=":sync_tasks">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/workorder_sync_adapter" />
+        </service>
+
+        <provider
+            android:name="com.odoo.addons.workorder.providers.WorkOrderSyncProvider"
+            android:authorities="com.odoo.addons.workorder.workorder"
+            android:label="Work Orders"
+            android:multiprocess="true" />
+
     </application>
 
 </manifest>
