@@ -101,7 +101,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
         String where = "";
         List<String> params = new ArrayList<>();
         if (mWorkcenterFilter != null) {
-            Log.i(TAG, "onCreateLoader: "+mWorkcenterFilter+" Values");
+            //Log.i(TAG, "onCreateLoader: "+mWorkcenterFilter+" Values");
             where += "workcenter_name = ? " ;
             params.add(mWorkcenterFilter) ;
         }
@@ -147,7 +147,13 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
         OControls.setText(view, R.id.workorder_name, row.getString("name"));
-        OControls.setText(view, R.id.workcenter_name, row.getString("workcenter_name"));
+        OControls.setText(view, R.id.production_name, row.getString("production_name"));
+        //OControls.setText(view, R.id.product_name, row.getString("product_name"));
+        OControls.setText(view, R.id.production_qty, row.getString("cycle"));
+        OControls.setText(view, R.id.production_datetime_start,
+                row.getString("date_start").equals(true) ? row.getString("date_start") : "") ;
+        OControls.setText(view, R.id.production_datetime_finish,
+                row.getString("date_finished").equals(true) ? row.getString("date_finished") : "") ;
     }
 
     @Override
@@ -167,7 +173,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Object item = parentView.getItemAtPosition(position);
                 mWorkcenterFilter = item.toString();
-                Log.i(TAG, "onItemSelected: "+item.toString());
+                //Log.i(TAG, "onItemSelected: "+item.toString());
                 getLoaderManager().restartLoader(0, null, WorkOrderList.this);
             }
             @Override

@@ -27,10 +27,17 @@ public class WorkOrder extends OModel {
 
     OColumn name = new OColumn("Name", OVarchar.class) ;
     OColumn product_id = new OColumn("Product", Product.class, OColumn.RelationType.ManyToOne);
+    @Odoo.Functional(store = true, depends = {"product_id"}, method = "storeProduct")
+    OColumn product_name = new OColumn("Product Name", OVarchar.class)
+            .setLocalColumn();
+
     OColumn production_id = new OColumn("Production", Production.class, OColumn.RelationType.ManyToOne);
+    @Odoo.Functional(store = true, depends = {"production_id"}, method = "storeProduction")
+    OColumn production_name = new OColumn("Production Name", OVarchar.class).setSize(100)
+            .setLocalColumn();
     OColumn workcenter_id = new OColumn("Workcenter", Workcenter.class, OColumn.RelationType.ManyToOne);
     @Odoo.Functional(store = true, depends = {"workcenter_id"}, method = "storeWorkcenter")
-    OColumn workcenter_name = new OColumn("Workcenter", OVarchar.class).setSize(100)
+    OColumn workcenter_name = new OColumn("Workcenter Name", OVarchar.class).setSize(100)
             .setLocalColumn();
     OColumn sequence = new OColumn("Sequence", OInteger.class);
     OColumn state = new OColumn("State", OVarchar.class);
@@ -44,6 +51,30 @@ public class WorkOrder extends OModel {
             if (!value.getString("workcenter_id").equals("false")) {
                 List<Object> workcenter_id = (ArrayList<Object>) value.get("workcenter_id");
                 return workcenter_id.get(1) + "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String storeProduction(OValues value) {
+        try {
+            if (!value.getString("production_id").equals("false")) {
+                List<Object> data = (ArrayList<Object>) value.get("production_id");
+                return data.get(1) + "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String storeProduct(OValues value) {
+        try {
+            if (!value.getString("product_id").equals("false")) {
+                List<Object> data = (ArrayList<Object>) value.get("product_id");
+                return data.get(1) + "";
             }
         } catch (Exception e) {
             e.printStackTrace();
