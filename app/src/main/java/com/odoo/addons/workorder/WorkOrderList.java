@@ -162,7 +162,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
 
     @Override
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
-        OControls.setText(view, R.id.workorder_name, row.getString("name"));
+        OControls.setText(view, R.id.workorder_name, row.getString("name_full"));
         //OControls.setText(view, R.id.production_name, row.getString("production_name"));
         OControls.setText(view, R.id.production_qty, "Total : " + row.getString("cycle") +" Units" );
         ImageView button_start = (ImageView) view.findViewById(R.id.button_start) ;
@@ -227,7 +227,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
         ODataRow row = OCursorUtils.toDatarow((Cursor) listAdapter.getItem(i));
         ImageView button_start = (ImageView)view.findViewById(R.id.button_start) ;
         ImageView button_done = (ImageView)view.findViewById(R.id.button_done) ;
-        Log.i(TAG, "onItemClick: "+row.getString("state"));
+        //Log.i(TAG, "onItemClick: "+row.getString("state"));
         if (row.getString("state").equals("draft")) {
             button_start.setVisibility(View.VISIBLE) ;
             button_done.setVisibility(View.INVISIBLE) ;

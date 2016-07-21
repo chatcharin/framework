@@ -46,6 +46,8 @@ public class WorkOrder extends OModel {
     OColumn date_start = new OColumn("Date Start", ODateTime.class);
     OColumn date_finished = new OColumn("Date Finished", ODateTime.class);
 
+    OColumn name_full = new OColumn("Name Fully", OVarchar.class) ;
+
     public String storeWorkcenter(OValues value) {
         try {
             if (!value.getString("workcenter_id").equals("false")) {

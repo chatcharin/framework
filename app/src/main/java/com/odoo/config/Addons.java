@@ -31,9 +31,9 @@ import com.odoo.core.support.addons.AddonsHelper;
 import com.odoo.core.support.addons.OAddon;
 
 public class Addons extends AddonsHelper {
-    OAddon workcenters = new OAddon(WorkcenterList.class).setDefault() ;
-    OAddon products = new OAddon(ProductList.class) ;
     OAddon uoms = new OAddon(UomList.class);
+    OAddon products = new OAddon(ProductList.class) ;
+    OAddon workcenters = new OAddon(WorkcenterList.class).setDefault() ;
     OAddon productions = new OAddon(ProductionList.class);
     OAddon workorders = new OAddon(WorkOrderList.class) ;
 }
