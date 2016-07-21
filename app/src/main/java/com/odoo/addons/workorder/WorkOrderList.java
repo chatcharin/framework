@@ -2,6 +2,7 @@ package com.odoo.addons.workorder;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +20,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,25 +30,34 @@ import android.widget.Toast;
 
 import com.odoo.OnSwipeTouchListener;
 import com.odoo.R;
+import com.odoo.addons.customers.CustomerDetails;
 import com.odoo.addons.workorder.models.WorkOrder;
 import com.odoo.addons.workorder.models.Workcenter;
 import com.odoo.core.orm.ODataRow;
+import com.odoo.core.orm.OValues;
 import com.odoo.core.support.addons.fragment.BaseFragment;
 import com.odoo.core.support.addons.fragment.IOnSearchViewChangeListener;
 import com.odoo.core.support.addons.fragment.ISyncStatusObserverListener;
 import com.odoo.core.support.drawer.ODrawerItem;
 import com.odoo.core.support.list.OCursorListAdapter;
+import com.odoo.core.utils.IntentUtils;
 import com.odoo.core.utils.OControls;
+import com.odoo.core.utils.OCursorUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by tititab on 7/15/16 AD.
  */
 public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
         ISyncStatusObserverListener, SwipeRefreshLayout.OnRefreshListener,
-        OCursorListAdapter.OnViewBindListener, IOnSearchViewChangeListener {
+        OCursorListAdapter.OnViewBindListener, IOnSearchViewChangeListener,
+        AdapterView.OnItemClickListener {
 
     public static final String TAG = WorkOrderList.class.getSimpleName();
 
@@ -71,7 +83,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        onSwipeTouchListener = new OnSwipeTouchListener();
+        //onSwipeTouchListener = new OnSwipeTouchListener();
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.workorder_list, container, false);
     }
@@ -104,6 +116,10 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
             //Log.i(TAG, "onCreateLoader: "+mWorkcenterFilter+" Values");
             where += "workcenter_name = ? " ;
             params.add(mWorkcenterFilter) ;
+            where += " and state != ?" ;
+            params.add("done") ;
+            where += " and state != ?" ;
+            params.add("cancel") ;
         }
         if (mFilter != null) {
             where += " and name like ? ";
@@ -147,13 +163,14 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public void onViewBind(View view, Cursor cursor, ODataRow row) {
         OControls.setText(view, R.id.workorder_name, row.getString("name"));
-        OControls.setText(view, R.id.production_name, row.getString("production_name"));
-        //OControls.setText(view, R.id.product_name, row.getString("product_name"));
-        OControls.setText(view, R.id.production_qty, row.getString("cycle"));
-        OControls.setText(view, R.id.production_datetime_start,
-                row.getString("date_start").equals(true) ? row.getString("date_start") : "") ;
-        OControls.setText(view, R.id.production_datetime_finish,
-                row.getString("date_finished").equals(true) ? row.getString("date_finished") : "") ;
+        //OControls.setText(view, R.id.production_name, row.getString("production_name"));
+        OControls.setText(view, R.id.production_qty, "Total : " + row.getString("cycle") +" Units" );
+        ImageView button_start = (ImageView) view.findViewById(R.id.button_start) ;
+        ImageView button_done = (ImageView) view.findViewById(R.id.button_done) ;
+        button_start.setTag(row.getInt("_id")) ;
+        button_done.setTag(row.getInt("_id")) ;
+        button_start.setVisibility(View.INVISIBLE);
+        button_done.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -187,39 +204,7 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
         listView.setAdapter(listAdapter);
         listAdapter.setOnViewBindListener(this);
         listView.setFastScrollAlwaysVisible(true);
-        listView.setOnTouchListener(new OnSwipeTouchListener(getContext(), listView) {
-            @Override
-            public void onSwipeRight(int pos) {
-                //Toast.makeText(getContext(), "right", Toast.LENGTH_LONG).show();
-                View child = listView.getChildAt(pos - listView.getFirstVisiblePosition());
-                if (child != null) {
-                    button_start = (ImageView) child.findViewById(R.id.button_start);
-                    if (button_start != null) {
-                        if (button_start.getVisibility() == View.INVISIBLE) {
-                            Animation animation =
-                                    AnimationUtils.loadAnimation(getContext(),
-                                            R.anim.slide_out_left);
-                            button_start.startAnimation(animation);
-                            button_start.setVisibility(View.VISIBLE);
-                        } else {
-                            Animation animation =
-                                    AnimationUtils.loadAnimation(getContext(),
-                                            R.anim.slide_in_right);
-                            button_start.startAnimation(animation);
-                            button_start.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                }
-                //showDeleteButton(pos);
-            }
-
-            @Override
-            public void onSwipeLeft() {
-                //Toast.makeText(getContext(), "left", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
+        listView.setOnItemClickListener(this);
         setHasSyncStatusObserver(TAG, this, db());
         getLoaderManager().initLoader(0, null, this);
     }
@@ -234,5 +219,54 @@ public class WorkOrderList extends BaseFragment implements LoaderManager.LoaderC
     @Override
     public void onSearchViewClose() {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        //Log.i(TAG, "onItemClick: ");
+        ODataRow row = OCursorUtils.toDatarow((Cursor) listAdapter.getItem(i));
+        ImageView button_start = (ImageView)view.findViewById(R.id.button_start) ;
+        ImageView button_done = (ImageView)view.findViewById(R.id.button_done) ;
+        Log.i(TAG, "onItemClick: "+row.getString("state"));
+        if (row.getString("state").equals("draft")) {
+            button_start.setVisibility(View.VISIBLE) ;
+            button_done.setVisibility(View.INVISIBLE) ;
+        } else {
+            button_start.setVisibility(View.INVISIBLE) ;
+            button_done.setVisibility(View.VISIBLE) ;
+        } ;
+
+        button_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WorkOrder order = new WorkOrder(getContext(), null) ;
+                OValues values = new OValues() ;
+                String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                DateFormat df = DateFormat.getTimeInstance();
+                df.setTimeZone(TimeZone.getTimeZone("gmt"));
+                String gmtTime = df.format(new Date());
+                values.put("date_start", currentDateandTime+ " " +gmtTime);
+                values.put("state","startworking") ;
+                order.update((int)view.getTag(), values) ;
+                view.setVisibility(View.INVISIBLE) ;
+                getLoaderManager().restartLoader(0, null, WorkOrderList.this);
+            }
+        });
+        button_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WorkOrder order = new WorkOrder(getContext(), null) ;
+                OValues values = new OValues() ;
+                String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                DateFormat df = DateFormat.getTimeInstance();
+                df.setTimeZone(TimeZone.getTimeZone("gmt"));
+                String gmtTime = df.format(new Date());
+                values.put("date_finished", currentDateandTime+ " " +gmtTime);
+                values.put("state","done") ;
+                order.update((int)view.getTag(), values) ;
+                view.setVisibility(View.INVISIBLE) ;
+                getLoaderManager().restartLoader(0, null, WorkOrderList.this);
+            }
+        });
     }
 }

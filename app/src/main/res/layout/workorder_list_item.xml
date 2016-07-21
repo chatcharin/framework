@@ -21,36 +21,47 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/production_name"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/body_text_2"
+                    android:fontFamily="@string/font_normal" />-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/workorder_name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/body_text_1"
+                    android:textColor="@color/android_green"
                     android:fontFamily="@string/font_normal" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/production_name"
+                    android:layout_weight="1"
+                    android:id="@+id/production_qty"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/body_text_1"
-                    android:fontFamily="@string/font_normal" />
+                    android:textColor="@color/android_blue"
+                    android:fontFamily="@string/font_normal"/>
             </LinearLayout>
-            <!--<ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />-->
-            <!--android:onClick="deleteItem"-->
             <ImageView
                 android:id="@+id/button_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:layout_gravity="center_vertical"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:layout_gravity="center"
                 android:src="@drawable/icon_playbutton"
-                android:visibility="visible" />
+                android:visibility="invisible" />
+            <ImageView
+                android:id="@+id/button_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_done"
+                android:visibility="invisible" />
         </LinearLayout>
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,15 +84,7 @@
                 android:textColor="@color/body_text_1"
                 android:fontFamily="@string/font_normal"
                 />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/production_qty"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/body_text_1"
-                android:fontFamily="@string/font_normal"/>
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 
