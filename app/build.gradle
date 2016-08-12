@@ -8,7 +8,7 @@ android {
         manifestPlaceholders = [applicationName: "Work Order"]
         //FIXME: Please change the application id as your requirement
         applicationId "th.co.ineco"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 6
         versionName "2.2.0"
